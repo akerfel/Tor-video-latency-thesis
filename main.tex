@@ -13,6 +13,14 @@
 }
 \usepackage[section]{placeins}
 
+%  --- Table for scenarios ---
+% https://tex.stackexchange.com/questions/431473/how-to-make-a-comparison-table-with-check
+\usepackage{pifont}
+\usepackage{xcolor}
+\newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
+%  --------------------------
+
 \makeatletter
 \AtBeginDocument{%
   \expandafter\renewcommand\expandafter\subsection\expandafter{%
@@ -22,14 +30,6 @@
 \makeatother
 
 \addbibresource{references.bib} % The file containing our references, in BibTeX format
-
-%  --- Table for scenarios ---
-% https://tex.stackexchange.com/questions/431473/how-to-make-a-comparison-table-with-check
-\usepackage{pifont}
-\usepackage{xcolor}
-\newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
-\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
-%  --------------------------
 
 \title{Mätning av latens för live videosamtal över omodifierad och modifierad Tor}
 \author{
@@ -183,10 +183,10 @@ The official Tor browser comes bundled with a Tor proxy, which was used to route
 IPv6 functionality is disabled by default for Tor relays, but all relays must support IPv4 addresses even if IPv6 is enabled \parencite{TorIPv6}. Only a small subset of the relays currently allow for IPv6 traffic \parencite{TorMetricsIPv6}. We disabled IPv6 for qTox, which is recommended when using Tor with qTox \parencite{qToxOverTor}.
 
 \subsubsection{torrc}
-torrc is a configuration file for Tor, and offers an easy way to configure Tor without editing the source code. In this experiment only torrc was used to configure Tor, leaving all other settings to default. We used torrc solely to restrict circuits to certain countries by using the command options \emph{EntryNodes}, \emph{MiddleNodes}, and \emph{ExitNodes}. For example, \textbf{ExitNodes \{SE\}} would limit exit nodes to Sweden. The torrc file we used is included in appendix \ref{section:torrcAppendix}. For further information on the specific command options, see \textcite{torrcmanpages}.
+torrc is a configuration file for Tor, and offers an easy way to configure Tor without editing the source code. In this experiment only torrc was used to configure Tor, leaving all other settings to default. We used torrc solely to restrict circuits to certain countries by using the command options \emph{EntryNodes}, \emph{MiddleNodes}, and \emph{ExitNodes}. For example, \textbf{ExitNodes \{SE\}} would limit exit nodes to Sweden. The torrc file used in this experiment is included in appendix \ref{section:torrcAppendix}. For further information on the specific command options, see \textcite{torrcmanpages}.
 
 \subsection{Test procedure}
-Two different live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor. However Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program specifically written for this project \parencite{latencyAnalyzer}. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
+Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program specifically written for this project \parencite{latencyAnalyzer}. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
 
 Each test lasted for five minutes. For each scenario, six tests were done, and each test measured about 100 delays. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
 
@@ -373,7 +373,7 @@ If an adversary controlled 250 exit nodes and 250 guard relays, and a user was u
      Malicious guards and exits & Global scenario & Germany scenario & Sweden scenario \\ [0.5ex]
      \hline
      1 & 0.000023\% & 0.00041\% & 0.019\% \\ 
-     2 & 0.000091\% & 0.0016\% & 0.075\% \\  
+     2 & 0.000091\% & 0.0016\% & 0.075\% \\
      5 & 0.00057\% & 0.010\% & 0.47\% \\
      10 & 0.0023\% & 0.041\% & 1.9\% \\
      20 & 0.0091\% & 0.16\% & 7.5\% \\
@@ -536,7 +536,7 @@ Finally, we acknowledge that our tests are not entirely conclusive. More testing
 \chapter{torrc}
 \label{section:torrcAppendix}
 
-We used the following torrc file in order to limit the Tor relays to Sweden. For limiting relays to Germany, \textbf{SE} should be replaced with \textbf{DE}.
+The following torrc file was used in order to limit the Tor relays to Sweden. For limiting relays to Germany, \textbf{SE} should be replaced with \textbf{DE}.
 \\
 \\
 \noindent\fbox{

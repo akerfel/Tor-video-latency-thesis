@@ -204,8 +204,6 @@
 
 
 \newcommand{\frontmatter}{
-  % EXTRA BLANK PAGE
-  %\ifx\@kthcover\@empty\relax\else \includepdf[pages={1,{}}]{\@kthcover}\fi
   \ifx\@kthcover\@empty\relax\else \includepdf[pages={1}]{\@kthcover}\fi
   \pagenumbering{roman}
   \setcounter{page}{1}
@@ -219,7 +217,6 @@
 \newcommand{\tailmatter}{
   \ifx\@kthcover\@empty\relax\else
   \cleardoublepage
-  % REMOVE BLANK PAGE BEFORE END COVER HERE  
   \includepdf[pages={2}]{\@kthcover}\fi
 }
 
