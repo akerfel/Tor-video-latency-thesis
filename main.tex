@@ -1,11 +1,9 @@
 \documentclass{kththesis}
 
-\usepackage{blindtext} % This is just to get some nonsense text in this template, can be safely removed
-
 \usepackage{csquotes} % Recommended by biblatex
 \usepackage[style=numeric,sorting=none,backend=biber, urldate=long, dateabbrev=false]{biblatex}
-\usepackage{svg}        % svg images
-\usepackage{hyperref}   % clickable ToB and sources
+\usepackage{svg}        % svg files
+\usepackage{hyperref}   % clickable ToB and references
 \hypersetup{
     colorlinks,
     hidelinks,
@@ -114,7 +112,7 @@ Tor (lit. \emph{The onion router}) is, as mentioned, a low-latency anonymous net
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=350pt]{resources/paint_tor_circuit.png}
-    \caption{An illustration of how a Tor client connects to a server.}
+    \caption{An illustration of how a Tor client connects to a server through three relays in the Tor network.}
     \label{fig:torCircuit}
 \end{figure}
 
@@ -136,9 +134,9 @@ An \emph{Autonomous System} (or \emph{AS}) can be described as a collection of I
 \section{Tor anonymity vulnerabilities}
 There are many different methods that can be used in order to deanonymize clients using Tor, some of which become more effective when the relays are dependent on the regional location of the client. In section \ref{section:anonymityMetrics} we have described the methods we used for calculating several anonymity metrics.
 
-Information about active Tor relays is publicly available \parencite{TorRelaySearch}. If an adversary notices that a request is coming from one of the listed router IP-addresses, they know that the client is using Tor. If the adversary also knows that the client is likely to have limited their Tor circuit to regional relays, and that the request came from an exit relay in a specific country, then the adversary might suspect that the client also is located in that country. At this point the user's anonymity has decreased. This is called a \emph{Tempest-attack} \parencite{wails2018tempest} \parencite{CLAPS}.
+Information about active Tor relays is publicly available \parencite{TorRelaySearch}. If an adversary notices that a request is coming from one of the listed router IP-addresses, they know that the client is using Tor. If the adversary also knows that the client is likely to have limited their Tor circuit to regional relays, and that the request came from an exit relay in a specific country, then the adversary might suspect that the client also is located in that country. At this point the user's anonymity has decreased. This is called a \emph{Tempest-attack} \parencite{wails2018tempest}\parencite{CLAPS}.
 
-In addition, the adversary can set up their own relays in the country that they suspect the client is located in. The risk that the client will use both a guard and an exit hosted by the adversary would then be dramatically increased compared to if the client would have used relays from the entire world. This means that limiting relays by the clients regional location will negatively affect anonymity. This is called a \emph{relay-placement attack} \parencite{guardPlacementAttacks} \parencite{CLAPS}.
+In addition, the adversary can set up their own relays in the country that they suspect the client is located in. The risk that the client will use both a guard and an exit hosted by the adversary would then be dramatically increased compared to if the client would have used relays from the entire world. This means that limiting relays by the clients regional location will negatively affect anonymity. This is called a \emph{relay-placement attack} \parencite{guardPlacementAttacks}\parencite{CLAPS}.
 
 \section{Tor compared to Signal}
 In 2020, the encrypted message service \emph{Signal} added support for live video calls \parencite{signal}. The calls use end-to-end encryption, and they are peer-to-peer, which results in higher privacy for users \parencite{signalPeerToPeer}. A study \parencite{cohn2020formalsecurity} in September 2020 found no major flaws in the design of the Signal protocol, by examining several standard security properties. 
@@ -293,7 +291,7 @@ We ran six tests for each of the five scenarios, resulting in around 600 data po
 
 For all calculated percentiles except the 99th, the latency was rising in the following order: UDP < TCP < Sweden < Germany < Global. The only difference for the 99th percentile was that the Sweden scenario had a higher latency than both the Germany and Global scenarios, see figure \ref{fig:99thPercentile}.
 
-All test data can be found on GitHub \parencite{thesisGithub}. In appendix \ref{section:sampleTestData} we have visualized some of the test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
+All test data can be found on GitHub \parencite{thesisGithub}, and in appendix \ref{section:sampleTestData} we have visualized some of the test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
 
 \subsection{How to read the latency graphs}
 As mentioned, all of the latency data points were collected by comparing each scenario to a Zoom stream. However, what we actually are interested in is the latency each scenario had relative to the UDP scenario, since the UDP scenario used default settings in qTox (except for IPv6 being turned off). 
@@ -303,9 +301,7 @@ The blue parts of each column in the graphs represent the latency that was added
 The red parts show the most relevant numbers for this project, namely the relative latency between the UDP scenario and the other scenarios. This was calculated by subtracting the latency the other scenarios had relative to Zoom with the latency the UDP scenario had relative to Zoom.
 
 \subsection{UDP scenario}
-As mentioned, the UDP scenario will be the basis for comparison for all other scenarios, since it will help us analyze how much latency the specific settings for each scenario actually added. The 25th percentile latency for the UDP scenario had a very small delay of 16 ms, relative to Zoom. The median latency was 116 ms, the 75th percentile was 266 ms, 95th percentile was 516 ms, and 99th percentile was 600 ms.
-
-In essence, the UDP scenario was usually only a tenth of a second behind Zoom, and rarely lagged behind by more than half a second.
+As mentioned, the UDP scenario will be the basis for comparison for all other scenarios, since it will help us analyze how much latency the specific settings for each scenario actually added. The 25th percentile latency for the UDP scenario had a very small delay of 16 ms, relative to Zoom. The median latency was 116 ms, the 75th percentile was 266 ms, 95th percentile was 516 ms, and 99th percentile was 600 ms. In essence, the UDP scenario was usually only a tenth of a second behind Zoom, and rarely lagged behind by more than half a second.
 
 \subsection{25th, 50th, and 75th percentile}
 The 25th, 50th (median) and 75th percentile showed quite similar results for all scenarios, when compared to the UDP scenario. See figures \ref{fig:25thPercentile}, \ref{fig:50thPercentile} and \ref{fig:75thPercentile}. For those percentiles, using TCP instead of UDP meant an increase of about 200 ms latency. Using Swedish or German Tor relays meant an increase of about 300 ms (the Germany scenario being slightly higher than the Sweden scenario). Finally, using global Tor relays meant an increase of about 500 ms.
@@ -400,7 +396,7 @@ These values rely on the assumptions specified in section \ref{section:shannonen
 \end{figure}
 
 \subsection{Degree of anonymity}
-These values rely on the assumptions specified in section \ref{section:shannonentropy}. Vanilla Tor users connect to Tor relays from the entire world, which means that if no attacks have been made, the degree of anonymity is 100 \% in that system. This is because, in that scenario, adversaries can not exclude any users from the set of possible users by looking at the region of the relays that the user is connected to. For German Tor users the degree of anonymity is reduced to 82.6 \%; and for Swedish Tor users the degree of anonymity is reduced to 65.3 \%.
+These values rely on the assumptions specified in section \ref{section:shannonentropy}. Vanilla Tor users connect to Tor relays from the entire world, which means that if no attacks have been made, the degree of anonymity is 100 \% in that system. This is because adversaries can not exclude any users from the set of possible users by looking at the region of the relays that the user is connected to. For German Tor users the degree of anonymity is reduced to 82.6 \%; and for Swedish Tor users the degree of anonymity is reduced to 65.3 \%.
 
 \begin{figure}[htbp]
   \centering
@@ -416,14 +412,13 @@ In this section the latency and anonymity results will be summarized.
 The UDP scenario was usually about 100 ms behind Zoom, with some latency spikes at \char`\~500 ms. For the 25th, 50th, and 75th percentiles, when comparing the scenarios to the UDP scenario, the TCP scenario was \char`\~200 ms behind, the Sweden and Germany scenarios about \char`\~300 ms, and the Global scenario \char`\~500 ms. For the 95th percentile, the TCP scenario was only slightly behind the UDP scenario, the Sweden and Germany scenarios were again only about 300 ms behind, however the Global scenario was a whole second behind. Finally, for the 99th percentile, the TCP scenario was again only slightly behind the UDP scenario, the Sweden scenario had the biggest relative latency of more than three seconds, the Germany scenario at one second, and the Global scenario at two seconds.
 
 \break
-
-From these results some key findings can be established, when comparing each scenario to the UDP scenario:
+\noindent From these results some key findings can be established, when comparing the Global, Germany, Sweden, and TCP scenarios to the UDP scenario:
 
 \begin{itemize}
   \vspace{-0.2cm}\item The Global scenario usually had a relative latency of \char`\~500 ms.
   \vspace{-0.2cm}\item The Sweden and Germany scenarios usually had very similar relative latency, and they were about 40 \% lower than the Global scenario, at \char`\~300 ms.
   \vspace{-0.2cm}\item The TCP scenario's relative latency was about 60 \% lower than the Global scenario, at \char`\~200 ms.
-  \vspace{-0.2cm}\item At the 95th percentile, the Global scenario had a much higher relative latency than all other scenarios, at more than 1000 ms.
+  \vspace{-0.2cm}\item At the 95th percentile, the Global scenario had a much higher relative latency than all other scenarios, at over 1000 ms.
   \vspace{-0.2cm}\item At the 99th percentile, all three Tor scenarios had a relative latency higher than 900 ms.
 \end{itemize}
 
@@ -496,10 +491,10 @@ It is possible to estimate the absolute latency for each scenario, by adding the
 \end{figure}
 
 \subsection{Simplified anonymity calculations}
-We have made multiple assumptions and simplified our anonymity calculations, which has been specified in section \ref{section:anonymityMetrics}. Furthermore, we only calculated three different anonymity metrics. Regionally limiting the usage of Tor relays might have other unwanted effects on privacy, such as making deanonymization attacks more effective. This remains to be explored. Thus we do not recommend regionally limiting the relays with our methods.
+We have made multiple assumptions and simplified our anonymity calculations, which has been specified in section \ref{section:anonymityMetrics}. Furthermore, we only calculated three different anonymity metrics. Regionally limiting the usage of Tor relays might have other unwanted effects on privacy, such as making deanonymization attacks more effective; this remains to be explored. Thus we do not recommend regionally limiting the relays with our methods.
 
 \section{Sources of error}
-One possible source of data error is the fact that the sender had a relatively low download speed of 13.11 Mbit/s, and a high ping of 43.81 ms. If these metrics had been more favorable, the results might have been different, especially considering that \emph{two} video streams were sent at the same time. Furthermore, each of the five scenarios only had about 600 data points each. With more data points the results would be more accurate, especially if more Tor circuits were tested (we tested six circuits for each scenario involving Tor). 
+One possible source of data error is the fact that the sender had a relatively low download speed of 13.11 Mbit/s, and a high ping of 43.81 ms. If these metrics had been more favorable, the results might have been different, especially considering that \emph{two} video streams were sent at the same time. Furthermore, each of the five scenarios only had about 600 data points each. With more data points the results would be more accurate, especially if more Tor circuits were tested, since latency may differ between different circuits.
 
 Another source of error is related to our calculations for Shannon entropy and degree of anonymity, which both rely on the number of Tor users there are \parencite{tormetricsUserStats}. The number of Tor users were taken from Torproject.org, and were just an estimate \parencite{tormetricsAboutUserMetrics}.
 
@@ -509,15 +504,15 @@ As mentioned in section \ref{section:relatedWork}, other location aware path sel
 Furthermore, most other selection path studies managed to decrease latency, and in some cases also increased anonymity. An example of this is the CLAPS system, see section \ref{section:CLAPS}. Our method did indeed decrease latency, but also decreased anonymity in several metrics, and much more so than other studies. The severe decrease in anonymity is the weak point in our method.
 
 \section{Further Studies}
-It would be interesting to compare the Tor latency results with the latency induced when video calling using a VPN connection. VPN offers much lower latency than Tor for multiple reasons. First, VPN uses one proxy hop instead of three. Secondly, the VPN proxy is usually closer to the user than the Tor relays are. Lastly, VPN is not limited to sending TCP streams. However the anonymity for VPN is generally lower than for Tor. In a similar manner, the latency induced and anonymity when using Signal could also be examined.
+It would be interesting to compare the Tor latency results with the latency induced when video calling using a VPN connection. VPN offers much lower latency than Tor for multiple reasons. First, VPN uses one proxy hop instead of three. Secondly, the VPN proxy is usually closer to the user than the Tor relays are, and lastly, VPN is not limited to sending TCP streams. However the anonymity aspects for VPN is generally worse than for Tor. In a similar manner, the latency induced and anonymity aspects when video calling through Signal could also be examined.
 
 As mentioned in section \ref{section:anonymityMetrics}, we did not attempt to estimate a realistic number of malicious relays, since it is a very complex task. Further studies could try to estimate the amount of malicious relays specifically for certain geographical regions, such as Sweden or Germany.
 
 We also mentioned in section \ref{section:practicaluse} that we did not perform formal testing for practical use cases for Tor latency. Here, two aspects could be explored. First, what the latency would be under those circumstances, and secondly if the latency for the different scenarios would be of a satisfactory nature for end users, by performing user testing.
 
-Multiple other scenarios could be interesting to explore. First, the effect of limiting relays by region has on download and upload speed (i.e. throughput). Secondly, the latency effect when several people are in the same group video call could be examined. qTox does not currently support multiple people video calls, but perhaps some other application could be used (it would need to allow for TCP to be used for video transfer, and the use of a SOCKS proxy). Thirdly, the relays could be limited to other countries than only Sweden and Germany.
+Multiple other scenarios could be interesting to explore. First, the effect limiting relays by region has on download and upload speed (i.e. throughput). Secondly, the latency effect when several people are in the same group video call could be examined. qTox does not currently support multiple people video calls, but perhaps some other application could be used (it would need to allow for TCP to be used for video transfer, and the use of a SOCKS proxy). Thirdly, the relays could be limited to other countries than only Sweden and Germany.
 
-Furthermore, in our scenarios we limited \emph{all} relays in the circuit regionally, but if only the guard or the exit was regionally limited, perhaps higher anonymity could be achieved (although the latency would be increased). Multiple other relay configurations could be tested, for example by using relays from a few countries close to the user, since that could partially circumvent relay-placement attacks. Regarding anonymity, more anonymity metrics could also be explored. Lastly, especially in the future as IPv6 adoption increases within the Tor network, it would be interesting to test the latency using not only IPv4 but also IPv6. 
+Furthermore, in our scenarios we limited \emph{all} relays in the circuit regionally, but if only the guard or the exit was regionally limited, perhaps higher anonymity could be achieved (although the latency would be increased). Multiple other relay configurations could be tested, for example by using relays from a few countries close to the user, since that could partially circumvent relay-placement attacks. Regarding anonymity, more anonymity metrics could also be explored. Lastly, especially in the future as IPv6 adoption increases within the Tor network, it would be interesting to test the latency using not only IPv4 but also IPv6.
 
 \chapter{Conclusions}
 The results show that when qTox was connected via vanilla Tor, the median latency was 517 ms higher than unmodified qTox for live video calls. When qTox's Tor connection was limited to only using relays within Sweden or Germany, the median relative latency was reduced by about 42 \% to 300 ms for Sweden and by about 39 \% to 317 ms for Germany. Vanilla Tor experienced more frequent and higher latency spikes than the other scenarios, however all scenarios using Tor experienced occasional latency spikes over 900 ms relative to when Tor was not used.
@@ -532,10 +527,8 @@ Finally, we acknowledge that our tests are not entirely conclusive. More testing
 \printbibliography[heading=bibintoc]
 
 \appendix
-
 \chapter{torrc}
 \label{section:torrcAppendix}
-
 The following torrc file was used in order to limit the Tor relays to Sweden. For limiting relays to Germany, \textbf{SE} should be replaced with \textbf{DE}.
 \\
 \\
@@ -557,7 +550,6 @@ The following torrc file was used in order to limit the Tor relays to Sweden. Fo
 
 \chapter{Sample test data}
 \label{section:sampleTestData}
-
 One sample test for each of the five scenarios is shown here. The y-axis for all graphs show latencies between 0 ms and 1000 ms. All test data can be found on GitHub \parencite{thesisGithub}.
 
 \begin{figure}[htbp]
