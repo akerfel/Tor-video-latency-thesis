@@ -188,10 +188,10 @@ torrc is a configuration file for Tor, and offers an easy way to configure Tor w
 \subsection{Test procedure}
 Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program specifically written for this project \parencite{latencyAnalyzer}. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
 
-Each test lasted for five minutes. For each scenario, six tests were done, and each test measured about 100 delays. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
+Each test lasted for five minutes. For each scenario, six tests were conducted, and each test measured about 100 delays. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
 
 \subsection{Scenarios}
-In figure \ref{table:scenariosTable} the specifics of each scenario is listed. The latency for each scenario was measured using Zoom as a basis for comparison. The \emph{UDP scenario} used default settings in qTox, except for IPv6 being turned off. The \emph{UDP scenario} and the \emph{TCP scenario} did not use Tor. The \emph{Germany} and \emph{Sweden} scenarios used modified versions of Tor, for which only relays from those countries were used. The \emph{Global scenario} used vanilla Tor, with relays from the entire world.
+In figure \ref{table:scenariosTable} the specifics of each scenario is listed. The latency for each scenario was measured using Zoom as a basis for comparison. The \emph{UDP scenario} used default settings in qTox, except for IPv6 being turned off. The \emph{UDP scenario} and the \emph{TCP scenario} did not use Tor. The \emph{Germany} and \emph{Sweden} scenarios used modified versions of Tor, for which only relays from each respective country were used. The \emph{Global scenario} used vanilla Tor, with relays from the entire world.
 
 \begin{figure}[!htb]
     \centering
@@ -256,7 +256,7 @@ We have also simplified our calculations by assuming that all guards and exits h
 Shannon entropy, which is measured in bits, is another way to calculate anonymity. In simplified terms, higher entropy means higher anonymity. \textcite{diaz2002towards} described how Shannon entropy can be calculated for onion routing systems such as Tor. Let \emph{N} be the \emph{anonymity set}, i.e. the total number of concurrent users in the anonymity system, which was about two million during the first four months of 2021, see figure \ref{fig:numberOfTorUsers}. If all users in the system are equally likely to have sent a message, then each user has \emph{maximum entropy} in that system, which can be calculated as such:
 
 \[E_{max} = log_{2}(N)\]
-Assume an adversary somehow is able to exclude a set of possible senders of a certain message, leaving a set \emph{S} where every user has the same probability of being the sender. The entropy for this set of users can be calculated as follows:
+Assume an adversary is somehow able to exclude a set of possible senders of a certain message, leaving a set \emph{S} where every user has the same probability of being the sender. The entropy for this set of users can be calculated as follows:
 
 \[E_{S} = log_{2}(S)\]
 In the context of this project, this exclusion of possible senders can be made because we have assumed that Tor users only use regional relays. Specifically, the following assumptions have been made for the Shannon entropy calculations:
@@ -293,7 +293,7 @@ We ran six tests for each of the five scenarios, resulting in around 600 data po
 
 For all calculated percentiles except the 99th, the latency was rising in the following order: UDP < TCP < Sweden < Germany < Global. The only difference for the 99th percentile was that the Sweden scenario had a higher latency than both the Germany and Global scenarios, see figure \ref{fig:99thPercentile}.
 
-All test data can be found on GitHub \parencite{thesisGithub}. In appendix \ref{section:sampleTestData} we have visualized some of this test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
+All test data can be found on GitHub \parencite{thesisGithub}. In appendix \ref{section:sampleTestData} we have visualized some of the test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
 
 \subsection{How to read the latency graphs}
 As mentioned, all of the latency data points were collected by comparing each scenario to a Zoom stream. However, what we actually are interested in is the latency each scenario had relative to the UDP scenario, since the UDP scenario used default settings in qTox (except for IPv6 being turned off). 
@@ -308,36 +308,36 @@ As mentioned, the UDP scenario will be the basis for comparison for all other sc
 In essence, the UDP scenario was usually only a tenth of a second behind Zoom, and rarely lagged behind by more than half a second.
 
 \subsection{25th, 50th, and 75th percentile}
-The 25th, 50th (median) and 75th percentile showed quite similar results for all scenarios, when compared to the UDP scenario. See figures \ref{fig:25thPercentile}, \ref{fig:50thPercentile} and \ref{fig:75thPercentile}. For those percentiles, using TCP instead of UDP meant an increase of about 200 ms latency. Using Swedish or German Tor relays meant an increase of about 300 ms (Germany scenario slightly higher than the Sweden scenario). Finally, using global Tor relays meant an increase of about 500 ms.
+The 25th, 50th (median) and 75th percentile showed quite similar results for all scenarios, when compared to the UDP scenario. See figures \ref{fig:25thPercentile}, \ref{fig:50thPercentile} and \ref{fig:75thPercentile}. For those percentiles, using TCP instead of UDP meant an increase of about 200 ms latency. Using Swedish or German Tor relays meant an increase of about 300 ms (the Germany scenario being slightly higher than the Sweden scenario). Finally, using global Tor relays meant an increase of about 500 ms.
 
 \begin{figure}[!htb]
     \centering
     \includesvg[width=350pt]{resources/graphs/25th percentile relative latency.svg}
-    \caption{25th percentile latency for each scenario. Blue represents the 25th percentile latency for the UDP scenario, relative to Zoom. Red represents latency relative to the UDP scenario's 25th percentile latency. The black numbers show latency relative to Zoom.}
+    \caption{25th percentile latency for each scenario. Blue represents the 25th percentile latency for the UDP scenario, relative to Zoom. Red represents the latency relative to the UDP scenario's 25th percentile latency. The black numbers show the latency relative to Zoom.}
     \label{fig:25thPercentile}
 \end{figure}
 
 \begin{figure}[!htb]
     \centering
     \includesvg[width=350pt]{resources/graphs/Median relative latency.svg}
-    \caption{50th percentile (median) latency for each scenario. Blue represents median latency for the UDP scenario, relative to Zoom. Red represents latency relative to the UDP scenario's median latency. The black numbers show latency relative to Zoom.}
+    \caption{50th percentile (median) latency for each scenario. Blue represents median latency for the UDP scenario, relative to Zoom. Red represents the latency relative to the UDP scenario's median latency. The black numbers show the latency relative to Zoom.}
     \label{fig:50thPercentile}
 \end{figure}
 
 \begin{figure}[!htb]
     \centering
     \includesvg[width=350pt]{resources/graphs/75th percentile relative latency.svg}
-    \caption{75th percentile latency for each scenario. Blue represents the 75th percentile latency for the UDP scenario, relative to Zoom. Red represents latency relative to the UDP scenario's 75th percentile latency. The black numbers show latency relative to Zoom.}
+    \caption{75th percentile latency for each scenario. Blue represents the 75th percentile latency for the UDP scenario, relative to Zoom. Red represents the latency relative to the UDP scenario's 75th percentile latency. The black numbers show the latency relative to Zoom.}
     \label{fig:75thPercentile}
 \end{figure}
 
 \subsection{The 95th percentile}
-For the 95th percentile, the TCP scenario had very similar latency to the UDP scenario, the Sweden and Germany scenarios were about 350 ms behind (similar to lower percentiles), and the Global scenario was a whole second behind (much bigger difference compared to lower percentiles). 
+For the 95th percentile, the TCP scenario had very similar latency to the UDP scenario, the Sweden and Germany scenarios were about 350 ms behind (similar to lower percentiles), and the Global scenario was 1000 ms behind (large difference compared to lower percentiles).
 
 \begin{figure}[!htb]
     \centering
     \includesvg[width=350pt]{resources/graphs/95th percentile relative latency.svg}
-    \caption{95th percentile latency for each scenario. Blue represents the 95th percentile latency for the UDP scenario, relative to Zoom. Red represents latency relative to the UDP scenario's 95th percentile latency. The black numbers show latency relative to Zoom.}
+    \caption{95th percentile latency for each scenario. Blue represents the 95th percentile latency for the UDP scenario, relative to Zoom. Red represents the latency relative to the UDP scenario's 95th percentile latency. The black numbers show the latency relative to Zoom.}
     \label{fig:95thPercentile}
 \end{figure}
 
@@ -349,7 +349,7 @@ The Sweden scenario's 99th percentile was 3563 ms higher than UDP's 99th percent
 \begin{figure}[!htb]
     \centering
     \includesvg[width=350pt]{resources/graphs/99th percentile relative latency.svg}
-    \caption{99th percentile latency for each scenario. Blue represents the 99th percentile latency for the UDP scenario, relative to Zoom. Red represents latency relative to the UDP scenario's 99th percentile latency. The black numbers show latency relative to Zoom.}
+    \caption{99th percentile latency for each scenario. Blue represents the 99th percentile latency for the UDP scenario, relative to Zoom. Red represents the latency relative to the UDP scenario's 99th percentile latency. The black numbers show the latency relative to Zoom.}
     \label{fig:99thPercentile}
 \end{figure}
 
