@@ -103,7 +103,7 @@ In this chapter the following topics will be presented:
     \item Tor's transport protocol (TCP), and how it is relevant for this study.
     \item Autonomous systems, and some of Tor's anonymity vulnerabilities.
     \item Tor compared to Signal, in terms of latency and privacy.
-    \item Related work that has explored methods for measuring video latency, and how the performance and anonymity for Tor could be improved by changing Tor's path selection algorithm.
+    \item Related work that has explored methods for measuring video latency, and how the performance and anonymity for Tor could be affected by changing Tor's path selection algorithm.
 \end{itemize}
 
 \section{Tor}
@@ -435,13 +435,9 @@ In this section the latency results will be discussed.
 The UDP scenario had a relative latency of 116 ms, meaning the qTox stream lagged behind the Zoom stream by 116 ms. The UDP scenario also had some latency spikes of over 500 ms in the 95th and 99th percentiles. This was unexpectedly high, since the UDP scenario used the same transport protocols (UDP and TCP) as Zoom. One possible explanation for this result is that the underlying algorithms (e.g. compression) responsible for sending and receiving video could differ for qTox and Zoom. However, even though the TCP scenario usually performed worse than the UDP scenario, their latency spikes were similar, at roughly half a second relative to Zoom. This could mean that latency spikes are independent of which transport protocol is used.
 
 \subsection{TCP effect on latency}
-By comparing the UDP scenario and TCP scenario, we can conclude that solely using TCP instead of both TCP and UDP increased the latency of roughly 200 ms. The Global scenario had to use TCP, since Tor only supports TCP, and had a latency of 517 ms. We can thus conclude that at least 200 of 517 ms, or 39 \%, of the latency induced by vanilla Tor can be attributed to the usage of TCP instead of UDP and TCP.
+By comparing the UDP scenario and TCP scenario, we can conclude that solely using TCP instead of both TCP and UDP increased the latency with roughly 200 ms. The Global scenario had to use TCP, since Tor only supports TCP, and had a latency of 517 ms. We can thus conclude that at least 200 of 517 ms, or 39 \%, of the latency induced by vanilla Tor can be attributed to the usage of TCP instead of UDP and TCP. This would mean that it is equally important to effectively circumvent the inherited problems of TCP, as it is to change the path selection algorithm for Tor, in order to achieve lower latency when transmitting live video. Implementing unordered delivery for TCP is one solution that could improve latency \parencite{unorderedTCPdelivery}. 
 
-This would mean that it is equally important to effectively circumvent the inherited problems of TCP, as it is to change the path selection algorithm for Tor, to achieve lower latency when transmitting live video.
-
-However, this specifically concerns qTox, since other live video calling applications might handle video transmission with TCP more efficiently (although not many applications support solely using TCP). Implementing unordered delivery for TCP is one solution that could improve latency \parencite{unorderedTCPdelivery}.
-
-Furthermore, for the 99th percentile the Tor scenarios had much higher latency than the TCP scenario. Therefore, only improving the usage of TCP might still leave some unwanted latency spikes. This remains to be explored.
+However, this specifically concerns qTox, since other live video calling applications might handle video transmission with TCP more efficiently (although not many applications support solely using TCP). Furthermore, for the 99th percentile the Tor scenarios had much higher latency than the TCP scenario. Therefore, only improving the usage of TCP might still leave some unwanted latency spikes. This remains to be explored.
 
 \subsection{Sweden and Germany scenarios}
 It was interesting that the Sweden and Germany scenarios had very similar latency results. This could be explained by Germany's close proximity to Sweden (where the sender and receiver were located), and the great quantity of German relays. This means that only using relays in the user's own country might not always be the best choice. For example, a Tor user in a country with similar proximity to Germany as Sweden but with less relays might achieve better latency results by connecting to German relays rather than relays in their own country. Furthermore, the user's anonymity will also be improved due to the larger amount of relays in Germany. However, if too many users connect to German relays, the latency and anonymity would inevitably degrade, since the relays would be more loaded and adversaries would be more likely to specifically target German relays.
