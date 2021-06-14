@@ -92,7 +92,7 @@ The research aims to answer two questions:
 The limitations of this study are discussed in detail in section \ref{section:limitations}. In summary, more practical use cases could be tested; we have not performed an in-depth analysis of what the data will mean for the user experience; only some relay regions have been evaluated; we are measuring \emph{relative} latency (not \emph{absolute} latency); and we have used simplified anonymity calculations that rely on some assumptions.
 
 \section{GitHub}
-The LaTeX source code and raw data \parencite{thesisGithub}, as well as the source code for the video latency measuring program \parencite{latencyAnalyzer}, have been uploaded to GitHub.
+The LaTeX source code and raw data\footnote{\url{https://github.com/akerfel/Tor-video-latency-thesis}}, as well as the source code for the video latency measuring program\footnote{\url{https://github.com/akerfel/video-latency-analyzer}}, have been uploaded to GitHub.
 
 \chapter{Background}
 In this chapter the following topics will be presented:
@@ -163,7 +163,7 @@ In summary, CLAPS uses several techniques in order to improve performance, restr
 \subsection{Path selection algorithm studies overview}
 As mentioned, there have been numerous studies modifying Tor's path selection algorithm \parencite{CLAPS}\parencite{LASTor}\parencite{5684020}\parencite{1866345}\parencite{wang2012congestion}. Furthermore, \textcite{wacek2013empirical} have evaluated multiple proposed path selection algorithms for improving anonymity and performance. In general, the proposed path selection algorithms lose some anonymity in favor of performance or vice versa, albeit in varying amounts. Some of the algorithms focus on shorter geographic distance \parencite{LASTor}, while others base their algorithms on congestion, i.e. how much a relay is currently being used compared to its capacity \parencite{wang2012congestion}.
 
-The algorithms are difficult for end-users to use however, since they require modification of the Tor source code. More importantly, the algorithms are not readily available \parencite{CLAPSgithub}. These algorithms are therefore not relevant to end-users who are looking to modify their Tor experience. In contrast, the path selection algorithm modification studied in this experiment is simple to implement.
+The algorithms are difficult for end-users to use however, since they require modification of the Tor source code. More importantly, the algorithms are not currently accessibile \parencite{CLAPSgithub}. These algorithms are therefore not relevant to end-users who are looking to modify their Tor experience. In contrast, the path selection algorithm modification studied in this experiment is simple to implement.
 
 Furthermore, while performance has been measured for all these path selection algorithms, some chose to only measure throughput (e.g. \textcite{5684020}), and some measured the performance on simulated networks, not on the live Tor network (e.g. \textcite{CLAPS}). In addition, latency is often measured with ping (e.g. \textcite{wacek2013empirical}), while we focus strictly on the latency induced during live video calls.
 
@@ -184,7 +184,7 @@ IPv6 functionality is disabled by default for Tor relays, but all relays must su
 torrc is a configuration file for Tor, and offers an easy way to configure Tor without editing the source code. In this experiment only torrc was used to configure Tor, leaving all other settings to default. We used torrc solely to restrict circuits to certain countries by using the command options \emph{EntryNodes}, \emph{MiddleNodes}, and \emph{ExitNodes}. For example, \textbf{ExitNodes \{SE\}} would limit exit nodes to Sweden. The torrc file used in this experiment is included in appendix \ref{section:torrcAppendix}. For further information on the specific command options, see \textcite{torrcmanpages}.
 
 \subsection{Test procedure}
-Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program specifically written for this project \parencite{latencyAnalyzer}. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
+Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
 
 Each test lasted for five minutes. For each scenario, six tests were conducted, and each test measured about 100 delays. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
 
@@ -218,7 +218,7 @@ In figure \ref{table:scenariosTable} the specifics of each scenario is listed. T
 \label{section:measuringlatency}
 The two identical video streams that were sent through qTox and Zoom showed a black screen for three seconds, and then a white screen for three seconds. The video-sequence of black and white was then repeated for the entire duration of the test. The repeating video-sequence was made using the automatic slide-show feature in the web app \emph{Google Slides}, and it was captured using the \emph{share screen} feature in both Zoom and qTox. The resolution of the transmitted video was 1920x1080. The receiver recorded both of the video streams in 60 FPS (Frames Per Second) using the desktop application OBS \parencite{OBS}.
 
-Each frame of the recording was converted into a JPG image file. The images were used as input data to a program written in Java \parencite{latencyAnalyzer}, which outputted the length of each detected delay. The Java program used two different methods to measure the delay between the Zoom-video and the qTox-video. Both methods checked which specific frame the Zoom-video switched color, and then at which corresponding frame the qTox-video switched to the same color. The difference in frames for each color-change was used to calculate the delay.
+Each frame of the recording was converted into a JPG image file. The images were used as input data to a Java program written specifically for this project\footnote{\url{https://github.com/akerfel/video-latency-analyzer}}, which outputted the length of each detected delay. The Java program used two different methods to measure the delay between the Zoom-video and the qTox-video. Both methods checked which specific frame the Zoom-video switched color, and then at which corresponding frame the qTox-video switched to the same color. The difference in frames for each color-change was used to calculate the delay.
 
 \subsection{Zoom as basis for comparison}
 It was not possible to run two qTox-instances with different user settings on the same computer (e.g. one routed via Tor and one \emph{not} routed via Tor), which is why we had to use Zoom as a basis for comparison. Another solution would have been to use two computers with one qTox instance each, with different settings. However, that could give more inaccurate results, since two computers can have different network capabilities, while also making the test procedure more complicated.
@@ -291,7 +291,7 @@ We ran six tests for each of the five scenarios, resulting in around 600 data po
 
 For all calculated percentiles except the 99th, the latency was rising in the following order: UDP < TCP < Sweden < Germany < Global. The only difference for the 99th percentile was that the Sweden scenario had a higher latency than both the Germany and Global scenarios, see figure \ref{fig:99thPercentile}.
 
-All test data can be found on GitHub \parencite{thesisGithub}, and in appendix \ref{section:sampleTestData} we have visualized some of the test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
+All test data can be found on GitHub\footnote{\url{https://github.com/akerfel/Tor-video-latency-thesis}}, and in appendix \ref{section:sampleTestData} we have visualized some of the test data. Each graph in the appendix represents one of the six tests conducted for each scenario. The graphs show how the latency relative to Zoom alternated between high and low values.
 
 \subsection{How to read the latency graphs}
 As mentioned, all of the latency data points were collected by comparing each scenario to a Zoom stream. However, what we actually are interested in is the latency each scenario had relative to the UDP scenario, since the UDP scenario used default settings in qTox (except for IPv6 being turned off). 
@@ -551,7 +551,7 @@ The following torrc file was used in order to limit the Tor relays to Sweden. Fo
 
 \chapter{Sample test data}
 \label{section:sampleTestData}
-One sample test for each of the five scenarios is shown here. The y-axis for all graphs show latencies between 0 ms and 1000 ms. All test data can be found on GitHub \parencite{thesisGithub}.
+One sample test for each of the five scenarios is shown here. The y-axis for all graphs show latencies between 0 ms and 1000 ms. All test data can be found on GitHub\footnote{\url{https://github.com/akerfel/Tor-video-latency-thesis}}.
 
 \begin{figure}[htbp]
   \centering
