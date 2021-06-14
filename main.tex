@@ -186,7 +186,7 @@ torrc is a configuration file for Tor, and offers an easy way to configure Tor w
 \subsection{Test procedure}
 Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
 
-Each test lasted for five minutes and measured about 100 delays. For each scenario, six tests were conducted. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
+Each test lasted for five minutes and measured roughly 100 delays. For each scenario, six tests were conducted. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
 
 \subsection{Scenarios}
 In figure \ref{table:scenariosTable} the specifics of each scenario is listed. The latency for each scenario was measured using Zoom as a basis for comparison. The \emph{UDP scenario} used default settings in qTox, except for IPv6 being turned off. The \emph{UDP scenario} and the \emph{TCP scenario} did not use Tor. The \emph{Germany} and \emph{Sweden} scenarios used modified versions of Tor, for which only relays from each respective country were used. The \emph{Global scenario} used vanilla Tor, with relays from the entire world.
@@ -251,7 +251,7 @@ We have also simplified our calculations by assuming that all guards and exits h
 
 \subsection{Shannon entropy}
 \label{section:shannonentropy}
-Shannon entropy, which is measured in bits, is another way to calculate anonymity. In simplified terms, higher entropy means higher anonymity. \textcite{diaz2002towards} described how Shannon entropy can be calculated for onion routing systems such as Tor. Let \emph{N} be the \emph{anonymity set}, i.e. the total number of concurrent users in the anonymity system, which was about two million during the first four months of 2021, see figure \ref{fig:numberOfTorUsers}. If all users in the system are equally likely to have sent a message, then each user has \emph{maximum entropy} in that system, which can be calculated as such:
+Shannon entropy, which is measured in bits, is another way to calculate anonymity. In simplified terms, higher entropy means higher anonymity. \textcite{diaz2002towards} described how Shannon entropy can be calculated for onion routing systems such as Tor. Let \emph{N} be the \emph{anonymity set}, i.e. the total number of concurrent users in the anonymity system, which was roughly two million during the first four months of 2021, see figure \ref{fig:numberOfTorUsers}. If all users in the system are equally likely to have sent a message, then each user has \emph{maximum entropy} in that system, which can be calculated as such:
 
 \[E_{max} = log_{2}(N)\]
 Assume an adversary is somehow able to exclude a set of possible senders of a certain message, leaving a set \emph{S} where every user has the same probability of being the sender. The entropy for this set of users can be calculated as follows:
@@ -304,7 +304,7 @@ The red parts show the most relevant numbers for this project, namely the relati
 As mentioned, the UDP scenario will be the basis for comparison for all other scenarios, since it will help us analyze how much latency the specific settings for each scenario actually added. The 25th percentile latency for the UDP scenario had a very small delay of 16 ms, relative to Zoom. The median latency was 116 ms, the 75th percentile was 266 ms, 95th percentile was 516 ms, and 99th percentile was 600 ms. In essence, the UDP scenario was usually only a tenth of a second behind Zoom, and rarely lagged behind by more than half a second.
 
 \subsection{25th, 50th, and 75th percentile}
-The 25th, 50th (median) and 75th percentile showed quite similar results for all scenarios, when compared to the UDP scenario. See figures \ref{fig:25thPercentile}, \ref{fig:50thPercentile} and \ref{fig:75thPercentile}. For those percentiles, using TCP instead of UDP meant an increase of about 200 ms latency. Using Swedish or German Tor relays meant an increase of about 300 ms (the Germany scenario being slightly higher than the Sweden scenario). Finally, using global Tor relays meant an increase of about 500 ms.
+The 25th, 50th (median) and 75th percentile showed quite similar results for all scenarios, when compared to the UDP scenario. See figures \ref{fig:25thPercentile}, \ref{fig:50thPercentile} and \ref{fig:75thPercentile}. For those percentiles, using TCP instead of UDP \emph{and} TCP meant an increase of roughly 200 ms latency. Using Swedish or German Tor relays meant an increase of roughly 300 ms (the Germany scenario being slightly higher than the Sweden scenario). Finally, using global Tor relays meant an increase of roughly 500 ms.
 
 \begin{figure}[!htb]
     \centering
@@ -328,7 +328,7 @@ The 25th, 50th (median) and 75th percentile showed quite similar results for all
 \end{figure}
 
 \subsection{The 95th percentile}
-For the 95th percentile, the TCP scenario had very similar latency to the UDP scenario, the Sweden and Germany scenarios were about 350 ms behind (similar to lower percentiles), and the Global scenario was 1000 ms behind (large difference compared to lower percentiles).
+For the 95th percentile, the TCP scenario had very similar latency to the UDP scenario, the Sweden and Germany scenarios were roughly 350 ms behind (similar to lower percentiles), and the Global scenario was 1000 ms behind (large difference compared to lower percentiles).
 
 \begin{figure}[!htb]
     \centering
@@ -340,7 +340,7 @@ For the 95th percentile, the TCP scenario had very similar latency to the UDP sc
 \subsection{The 99th percentile}
 For the 99th percentile latency (figure \ref{fig:99thPercentile}), like the 95th percentile the results also differed compared to lower percentiles, except for the TCP scenario, which again only had a very slight increase of delay (77 ms) compared to the UDP scenario. 
 
-The Sweden scenario's 99th percentile was 3563 ms higher than UDP's 99th percentile, which is a massive difference compared to all other analyzed percentiles (where the Sweden scenario only was about 300 ms behind UDP). The 99th percentile was the \emph{only} percentile where the Sweden and Germany scenarios did not have similar results, since the Germany scenario's relative latency was much lower, at 947 ms (relative to the UDP scenario). Finally, the Global scenario had a 2093 ms relative latency.
+The Sweden scenario's 99th percentile was 3563 ms higher than UDP's 99th percentile, which is a massive difference compared to all other analyzed percentiles (where the Sweden scenario only was roughly 300 ms behind UDP). The 99th percentile was the \emph{only} percentile where the Sweden and Germany scenarios did not have similar results, since the Germany scenario's relative latency was much lower, at 947 ms (relative to the UDP scenario). Finally, the Global scenario had a 2093 ms relative latency.
 
 \begin{figure}[!htb]
     \centering
@@ -409,15 +409,15 @@ These values rely on the assumptions specified in section \ref{section:shannonen
 In this section the latency and anonymity results will be summarized.
 
 \subsection{Summarizing latency results}
-The UDP scenario was usually about 100 ms behind Zoom, with some occasional latency spikes at \char`\~500 ms. For the 25th, 50th, and 75th percentiles, when comparing the scenarios to the UDP scenario, the TCP scenario was \char`\~200 ms behind, the Sweden and Germany scenarios about \char`\~300 ms, and the Global scenario \char`\~500 ms. For the 95th percentile, the TCP scenario was only slightly behind the UDP scenario, the Sweden and Germany scenarios were again only about 300 ms behind, however the Global scenario was a whole second behind. Finally, for the 99th percentile, the TCP scenario was again only slightly behind the UDP scenario, the Sweden scenario had the biggest relative latency of more than three seconds, the Germany scenario at one second, and the Global scenario at two seconds.
+The UDP scenario was usually roughly 100 ms behind Zoom, with some occasional latency spikes at \char`\~500 ms. For the 25th, 50th, and 75th percentiles, when comparing the scenarios to the UDP scenario, the TCP scenario was \char`\~200 ms behind, the Sweden and Germany scenarios roughly \char`\~300 ms, and the Global scenario \char`\~500 ms. For the 95th percentile, the TCP scenario was only slightly behind the UDP scenario, the Sweden and Germany scenarios were again only roughly 300 ms behind, however the Global scenario was a whole second behind. Finally, for the 99th percentile, the TCP scenario was again only slightly behind the UDP scenario, the Sweden scenario had the biggest relative latency of more than three seconds, the Germany scenario at one second, and the Global scenario at two seconds.
 
 \break
 \noindent From these results some key findings can be established, when comparing the Global, Germany, Sweden, and TCP scenarios to the UDP scenario:
 
 \begin{itemize}
   \vspace{-0.2cm}\item The Global scenario usually had a relative latency of \char`\~500 ms.
-  \vspace{-0.2cm}\item The Sweden and Germany scenarios usually had very similar relative latency, and they were about 40 \% lower than the Global scenario, at \char`\~300 ms.
-  \vspace{-0.2cm}\item The TCP scenario's relative latency was about 60 \% lower than the Global scenario, at \char`\~200 ms.
+  \vspace{-0.2cm}\item The Sweden and Germany scenarios usually had very similar relative latency, and they were roughly 40 \% lower than the Global scenario, at \char`\~300 ms.
+  \vspace{-0.2cm}\item The TCP scenario's relative latency was roughly 60 \% lower than the Global scenario, at \char`\~200 ms.
   \vspace{-0.2cm}\item At the 95th percentile, the Global scenario had a much higher relative latency than all other scenarios, at over 1000 ms.
   \vspace{-0.2cm}\item At the 99th percentile, all three Tor scenarios had a relative latency higher than 900 ms.
 \end{itemize}
@@ -432,11 +432,12 @@ First we will discuss the latency results, then the anonymity results, after whi
 In this section the latency results will be discussed.
 
 \subsection{UDP and TCP scenario}
-The UDP scenario had a relative latency of 116 ms, meaning the qTox stream lagged behind the Zoom stream by 116 ms. The UDP scenario also had some latency spikes of over 500 ms in the 95th and 99th percentiles. This was unexpectedly high, since the UDP scenario used the same transport protocols (UDP and TCP) as Zoom. One possible explanation for this result is that the underlying algorithms (e.g. compression) responsible for sending and receiving video could differ for qTox and Zoom. However, even though the TCP scenario usually performed worse than the UDP scenario, their latency spikes were similar, at about half a second relative to Zoom. This could mean that latency spikes are independent of which transport protocol is used.
+The UDP scenario had a relative latency of 116 ms, meaning the qTox stream lagged behind the Zoom stream by 116 ms. The UDP scenario also had some latency spikes of over 500 ms in the 95th and 99th percentiles. This was unexpectedly high, since the UDP scenario used the same transport protocols (UDP and TCP) as Zoom. One possible explanation for this result is that the underlying algorithms (e.g. compression) responsible for sending and receiving video could differ for qTox and Zoom. However, even though the TCP scenario usually performed worse than the UDP scenario, their latency spikes were similar, at roughly half a second relative to Zoom. This could mean that latency spikes are independent of which transport protocol is used.
 
 \subsection{TCP effect on latency}
-Using TCP instead of UDP meant an increase of about 200 ms in latency. Since Tor only supports TCP, and the Global scenario added 517 ms compared to the UDP scenario, we can be quite certain that a large proportion (at least 200 ms, or 39 \%) of the latency induced by Tor can be attributed to the usage of TCP instead of UDP.
-This could mean that it is equally important to effectively circumvent the inherited problems of TCP, as it is to change the path selection algorithm for Tor, to achieve lower latency when transmitting live video.
+By comparing the UDP scenario and TCP scenario, we can conclude that solely using TCP instead of both TCP and UDP increased the latency of roughly 200 ms. The Global scenario had to use TCP, since Tor only supports TCP, and had a latency of 517 ms. We can thus conclude that at least 200 of 517 ms, or 39 \%, of the latency induced by vanilla Tor can be attributed to the usage of TCP instead of UDP and TCP.
+
+This would mean that it is equally important to effectively circumvent the inherited problems of TCP, as it is to change the path selection algorithm for Tor, to achieve lower latency when transmitting live video.
 
 However, this specifically concerns qTox, since other live video calling applications might handle video transmission with TCP more efficiently (although not many applications support solely using TCP). Implementing unordered delivery for TCP is one solution that could improve latency \parencite{unorderedTCPdelivery}.
 
@@ -495,7 +496,7 @@ It is possible to estimate the absolute latency for each scenario, by adding the
 The anonymity calculations rely on multiple assumptions and are simplified, as specified in section \ref{section:anonymityMetrics}. Furthermore, we only calculated three different anonymity metrics. Regionally limiting the usage of Tor relays might have other unwanted effects on privacy, such as making deanonymization attacks more effective; this remains to be explored. Since we cannot be certain of the anonymity implications, we do not recommend regionally limiting the relays with our methods if high anonymity is desired.
 
 \section{Sources of error}
-One possible source of data error is the fact that the receiver had a relatively low download speed of 13.11 Mbit/s, and a high ping of 43.81 ms. If these metrics had been more favorable, the results might have been different, especially considering that \emph{two} video streams were sent at the same time. Furthermore, each of the five scenarios only had about 600 data points each. With more data points the results would be more accurate, especially if more Tor circuits were tested, since latency may differ between different circuits.
+One possible source of data error is the fact that the receiver had a relatively low download speed of 13.11 Mbit/s, and a high ping of 43.81 ms. If these metrics had been more favorable, the results might have been different, especially considering that \emph{two} video streams were sent at the same time. Furthermore, each of the five scenarios only had roughly 600 data points each. With more data points the results would be more accurate, especially if more Tor circuits were tested, since latency may differ between different circuits.
 
 Another source of error is related to our calculations for Shannon entropy and degree of anonymity, which both rely on the number of Tor users there are \parencite{tormetricsUserStats}. The number of Tor users were taken from Torproject.org, and were just an estimate \parencite{tormetricsAboutUserMetrics}.
 
@@ -516,9 +517,9 @@ Multiple other scenarios could be interesting to explore. First, the effect limi
 Furthermore, in our scenarios we limited \emph{all} relays in the circuit regionally. If only the guard or the exit was regionally limited, perhaps higher anonymity could be achieved, although the latency might also increase. Multiple other relay configurations could be tested, for example by using relays from a few countries close to the user, since that could partially circumvent relay-placement attacks. Regarding anonymity, more anonymity metrics could also be explored. Lastly, especially in the future as IPv6 adoption increases within the Tor network, it would be interesting to test the latency using not only IPv4 but also IPv6.
 
 \chapter{Conclusions}
-The results show that for the application qTox, routing video calls through vanilla Tor increased the median latency by 517 ms. When qTox's Tor connection was limited to only using relays within Sweden or Germany, the median relative latency was reduced by about 42 \% to 300 ms for Sweden and by about 39 \% to 317 ms for Germany. When regionally limiting the Tor relays, the latency spikes were lower and less frequent compared to vanilla Tor, however the highest latency spikes were increased by more than 900 ms regardless of whether the Tor relays were regionally limited.
+The results show that for the application qTox, routing video calls through vanilla Tor increased the median latency by 517 ms. When qTox's Tor connection was limited to only using relays within Sweden or Germany, the median relative latency was reduced by 42 \% to 300 ms for Sweden and by 39 \% to 317 ms for Germany. When regionally limiting the Tor relays, the latency spikes were lower and less frequent compared to vanilla Tor, however the highest latency spikes were increased by more than 900 ms regardless of whether the Tor relays were regionally limited.
 
-We arrived at the conclusion that, for qTox connected via vanilla Tor, at least 39 \% of the added latency could be attributed to the usage of TCP instead of UDP. By improving how live video is sent over TCP, the latency induced by Tor could be reduced as well.
+We arrived at the conclusion that, for qTox connected via vanilla Tor, at least 39 \% of the added latency could be attributed to the usage of TCP instead of both TCP and UDP. By improving how live video is sent over TCP, the latency induced by Tor could be reduced as well.
 
 Anonymity wise, by making some assumptions and using simplified calculations, the results show that limiting relays to a region increases the risk of using a compromised circuit, and decreases Shannon entropy as well as the degree of anonymity. Limiting relays to Germany showed less anonymity loss than limiting relays to Sweden. Thus, our method offers a simple way of lowering latency, however it comes at a great loss in anonymity.
 

@@ -5,7 +5,7 @@ KTH bachelor thesis. Title: Measuring latency for live video calls routed via va
 [You can find the source code used for measuring video latency here.](https://github.com/akerfel/video-latency-analyzer)
 
 ## Raw data
-All of the raw data (i.e. measured latencies) used for this project can be found in the `data` folder, both in pdf and xlsx fomat.
+All of the raw data (measured latencies) used for this project can be found in the `data` folder, both in pdf and xlsx fomat.
 
 ## License
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
