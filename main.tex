@@ -92,7 +92,7 @@ The research aims to answer two questions:
 The limitations of this study are discussed in detail in section \ref{section:limitations}. In summary, more practical use cases could be tested; we have not performed an in-depth analysis of what the data will mean for the user experience; only some relay regions have been evaluated; we are measuring \emph{relative} latency (not \emph{absolute} latency); and we have used simplified anonymity calculations that rely on some assumptions.
 
 \section{GitHub}
-The LaTeX source code and raw data\footnote{\url{https://github.com/akerfel/Tor-video-latency-thesis}}, as well as the source code for the video latency measuring program\footnote{\url{https://github.com/akerfel/video-latency-analyzer}}, have been uploaded to GitHub.
+The LaTeX source code and raw data collected for this project\footnote{\url{https://github.com/akerfel/Tor-video-latency-thesis}}, as well as the source code for the video latency measuring program\footnote{\url{https://github.com/akerfel/video-latency-analyzer}}, have been uploaded to GitHub.
 
 \chapter{Background}
 In this chapter the following topics will be presented:
@@ -186,7 +186,7 @@ torrc is a configuration file for Tor, and offers an easy way to configure Tor w
 \subsection{Test procedure}
 Two live video calling applications were used for testing: \emph{Zoom} and \emph{qTox}. The aim of the tests was to measure the relative latency between Zoom and qTox in a video call. Two users, the \emph{sender} and the \emph{receiver}, were connected in video calls over Zoom and qTox. The sender sent two identical video streams to the receiver simultaneously: one through Zoom and one through qTox. No sound was transmitted. qTox had different connection settings according to the five scenarios listed in figure \ref{table:scenariosTable}. For some of these scenarios, qTox was routed via Tor, while Zoom always used default settings, and was never routed via Tor. For each of the five scenarios the latency difference between the Zoom-video and the qTox-video, as seen by the receiver, was calculated using a Java program. The specifics of how the delays were measured can be found in section \ref{section:measuringlatency}.
 
-Each test lasted for five minutes. For each scenario, six tests were conducted, and each test measured about 100 delays. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
+Each test lasted for five minutes and measured about 100 delays. For each scenario, six tests were conducted. Where applicable, the Tor proxy was restarted between tests in order for a new circuit to be established. Only the guard in the circuit remained the same between tests, since the selected guard only changes every 2 - 3 months \parencite{TorGuard}.
 
 \subsection{Scenarios}
 In figure \ref{table:scenariosTable} the specifics of each scenario is listed. The latency for each scenario was measured using Zoom as a basis for comparison. The \emph{UDP scenario} used default settings in qTox, except for IPv6 being turned off. The \emph{UDP scenario} and the \emph{TCP scenario} did not use Tor. The \emph{Germany} and \emph{Sweden} scenarios used modified versions of Tor, for which only relays from each respective country were used. The \emph{Global scenario} used vanilla Tor, with relays from the entire world.
